@@ -1,3 +1,5 @@
+package me.s1204.game;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;

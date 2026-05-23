@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     steps:
 
       - name: Checkout
@@ -18,18 +18,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 25
+          cache: 'maven'
 
       - name: Build
-        working-directory: Snake
-        run: |
-          javac -encoding UTF-8 -cp "lib/*" Snake.java
-          mkdir integrate
-          cd integrate && for jar in ../lib/*.jar; do jar xf "$jar"; done && cd ..
-          cp *.class integrate/
-          jar -cfm Snake.jar MANIFEST.MF -C integrate .
+        run: mvn -B -e -DskipTests package
 
       - name: Upload
         uses: actions/upload-artifact@v7
         with:
           name: SnakeGame
-          path: Snake/Snake.jar
+          path: target/Snake.jar
